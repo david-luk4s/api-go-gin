@@ -5,6 +5,7 @@ import (
 
 	"github.com/david-luk4s/api-go-gin/models"
 	"gorm.io/driver/postgres"
+	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
@@ -13,7 +14,8 @@ var (
 	err error
 )
 
-func ConnectionDB() {
+func ConnectionDB() *gorm.DB {
+
 	dsn := "host=localhost user=postgres password=postgres dbname=dbstudents port=5432 sslmode=disable"
 	DB, err = gorm.Open(postgres.Open(dsn))
 
@@ -21,4 +23,15 @@ func ConnectionDB() {
 		log.Panic(err.Error())
 	}
 	DB.AutoMigrate(&models.Student{})
+	return DB
+}
+
+func ConnectionDBTest() *gorm.DB {
+	DB, err = gorm.Open(sqlite.Open("gorm_test.db"), &gorm.Config{})
+
+	if err != nil {
+		log.Panic(err.Error())
+	}
+	DB.AutoMigrate()
+	return DB
 }

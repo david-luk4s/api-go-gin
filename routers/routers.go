@@ -7,6 +7,9 @@ import (
 
 func HandleRequests() {
 	r := gin.Default()
+	r.LoadHTMLGlob("templates/*")
+	r.GET("", controllers.Index)
+	r.NoRoute(controllers.RenderPageNotFound)
 	r.GET("/students", controllers.GetAllStudants)
 	r.GET("/students/:id", controllers.GetStudants)
 	r.POST("/students", controllers.CreateStundent)

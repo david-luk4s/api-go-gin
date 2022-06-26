@@ -2,6 +2,10 @@
 REST Api in Go GIN
 <img align="right" width="159px" src="https://raw.githubusercontent.com/gin-gonic/logo/master/color.png">
 
+# Implementations
+* Validators;
+* Unity Test;
+
 # Gin Web Framework
 [https://github.com/gin-gonic/gin](https://github.com/gin-gonic/gin)
 

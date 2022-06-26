@@ -8,6 +8,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func Index(c *gin.Context) {
+	c.HTML(http.StatusOK, "index.html", gin.H{
+		"message": "Api Rest write in Gin Golang",
+	})
+}
+
+func RenderPageNotFound(c *gin.Context) {
+	c.HTML(http.StatusNotFound, "404.html", nil)
+}
+
 func GetAllStudants(c *gin.Context) {
 	var student []models.Student
 	database.DB.Find(&student)
@@ -43,9 +53,8 @@ func CreateStundent(c *gin.Context) {
 }
 
 func DeleteStudent(c *gin.Context) {
-	var student models.Student
 	id := c.Params.ByName("id")
-	database.DB.Delete(&student, id)
+	database.DB.Delete(&models.Student{}, id)
 	c.JSON(http.StatusOK, gin.H{
 		"data": "student delete with sucess",
 	})

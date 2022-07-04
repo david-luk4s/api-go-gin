@@ -2,6 +2,7 @@ package routers
 
 import (
 	"github.com/david-luk4s/api-go-gin/controllers"
+	docs "github.com/david-luk4s/api-go-gin/docs"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
@@ -14,16 +15,18 @@ func HandleRequests() {
 	r.LoadHTMLGlob("templates/*")
 	r.NoRoute(controllers.RenderPageNotFound)
 
+	docs.SwaggerInfo.BasePath = "/api/v1"
+
 	v1 := r.Group("/api/v1")
 	{
 		students := v1.Group("/students")
 		{
-			students.GET("/students", controllers.GetAllStudants)
-			students.GET("/students/:id", controllers.GetStudants)
-			students.POST("/students", controllers.CreateStundent)
-			students.DELETE("/students/:id", controllers.DeleteStudent)
-			students.PATCH("/students/:id", controllers.UpdateStudent)
-			students.GET("/students/cpf/:cpf", controllers.SearchByCPF)
+			students.GET("", controllers.GetAllStudants)
+			students.GET(":id", controllers.GetStudants)
+			students.POST("", controllers.CreateStundent)
+			students.DELETE(":id", controllers.DeleteStudent)
+			students.PATCH(":id", controllers.UpdateStudent)
+			students.GET("/cpf/:cpf", controllers.SearchByCPF)
 		}
 	}
 

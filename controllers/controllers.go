@@ -6,6 +6,7 @@ import (
 	"github.com/david-luk4s/api-go-gin/database"
 	"github.com/david-luk4s/api-go-gin/models"
 	"github.com/gin-gonic/gin"
+	_ "github.com/swaggo/swag/example/celler/httputil"
 )
 
 func Index(c *gin.Context) {
@@ -21,7 +22,7 @@ func Index(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        q    query     string  false  "name search by q"  Format(email)
-// @Success      200  {array}   model.Student
+// @Success      200  {array}   models.Student
 // @Router       /students [get]
 func GetAllStudants(c *gin.Context) {
 	var student []models.Student
@@ -36,8 +37,8 @@ func GetAllStudants(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id   path      int  true  "Student ID"
-// @Success      200  {object}  model.Student
-// @Failure      400  {object}  http.StatusNotFound
+// @Success      200  {object}  models.Student
+// @Failure      400  {object}  httputil.HTTPError
 // @Router       /students/{id} [get]
 func GetStudants(c *gin.Context) {
 	id := c.Params.ByName("id")
@@ -60,9 +61,9 @@ func GetStudants(c *gin.Context) {
 // @Tags         students
 // @Accept       json
 // @Produce      json
-// @Param        students  body     model.Student  true  "Add Student"
-// @Success      200      {object}  model.Student
-// @Failure      400      {object}  http.StatusBadRequest
+// @Param        students  body     models.Student  true  "Add Student"
+// @Success      200      {object}  models.Student
+// @Failure      400      {object}  httputil.HTTPError
 // @Router       /students [post]
 func CreateStundent(c *gin.Context) {
 	var student models.Student
@@ -84,7 +85,7 @@ func CreateStundent(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id   path      int  true  "Student ID"  Format(int64)
-// @Success      204  {object}  model.Student
+// @Success      204  {object}  models.Student
 // @Router       /students/{id} [delete]
 func DeleteStudent(c *gin.Context) {
 	id := c.Params.ByName("id")
@@ -101,9 +102,9 @@ func DeleteStudent(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id       path      int                  true  "Student ID"
-// @Param        student  body      model.UpdateStudent  true  "Update Student"
-// @Success      200      {object}  model.Student
-// @Failure      400      {object}  http.StatusBadRequest
+// @Param        student  body      models.Student  true  "Update Student"
+// @Success      200      {object}  models.Student
+// @Failure      400      {object}  httputil.HTTPError
 // @Router       /students/{id} [patch]
 func UpdateStudent(c *gin.Context) {
 	var student models.Student
@@ -128,7 +129,7 @@ func UpdateStudent(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        cpf  query     string  false  "name search by cpf"  Format(cpf)
-// @Success      200  {array}   model.Student
+// @Success      200  {array}   models.Student
 // @Router       /students/cpf/:cpf	 [get]
 func SearchByCPF(c *gin.Context) {
 	var student models.Student
@@ -149,7 +150,7 @@ func SearchByCPF(c *gin.Context) {
 // RenderPageNotFound godoc
 // @Summary      Default page not found
 // @Description  Default page for router not found
-// @Success      400  {empty}   http.StatusNotFound
+// @Success      400  {empty}   httputil.HTTPError
 func RenderPageNotFound(c *gin.Context) {
 	c.HTML(http.StatusNotFound, "404.html", nil)
 }

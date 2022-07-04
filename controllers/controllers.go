@@ -14,16 +14,31 @@ func Index(c *gin.Context) {
 	})
 }
 
-func RenderPageNotFound(c *gin.Context) {
-	c.HTML(http.StatusNotFound, "404.html", nil)
-}
-
+// GetAllStudants godoc
+// @Summary      List students
+// @Description  get students
+// @Tags         students
+// @Accept       json
+// @Produce      json
+// @Param        q    query     string  false  "name search by q"  Format(email)
+// @Success      200  {array}   model.Student
+// @Router       /students [get]
 func GetAllStudants(c *gin.Context) {
 	var student []models.Student
 	database.DB.Find(&student)
 	c.JSON(200, student)
 }
 
+// GetStudants godoc
+// @Summary      Show an student
+// @Description  get string by ID
+// @Tags         students
+// @Accept       json
+// @Produce      json
+// @Param        id   path      int  true  "Student ID"
+// @Success      200  {object}  model.Student
+// @Failure      400  {object}  http.StatusNotFound
+// @Router       /students/{id} [get]
 func GetStudants(c *gin.Context) {
 	id := c.Params.ByName("id")
 	var student models.Student
@@ -39,6 +54,16 @@ func GetStudants(c *gin.Context) {
 	c.JSON(http.StatusOK, student)
 }
 
+// CreateStundent godoc
+// @Summary      Add an students
+// @Description  add by json students
+// @Tags         students
+// @Accept       json
+// @Produce      json
+// @Param        students  body     model.Student  true  "Add Student"
+// @Success      200      {object}  model.Student
+// @Failure      400      {object}  http.StatusBadRequest
+// @Router       /students [post]
 func CreateStundent(c *gin.Context) {
 	var student models.Student
 
@@ -52,6 +77,15 @@ func CreateStundent(c *gin.Context) {
 	c.JSON(http.StatusOK, student)
 }
 
+// DeleteStudent godoc
+// @Summary      Delete an student
+// @Description  Delete by student ID
+// @Tags         students
+// @Accept       json
+// @Produce      json
+// @Param        id   path      int  true  "Student ID"  Format(int64)
+// @Success      204  {object}  model.Student
+// @Router       /students/{id} [delete]
 func DeleteStudent(c *gin.Context) {
 	id := c.Params.ByName("id")
 	database.DB.Delete(&models.Student{}, id)
@@ -60,6 +94,17 @@ func DeleteStudent(c *gin.Context) {
 	})
 }
 
+// UpdateStudent godoc
+// @Summary      Update an Student
+// @Description  Update by json Student
+// @Tags         students
+// @Accept       json
+// @Produce      json
+// @Param        id       path      int                  true  "Student ID"
+// @Param        student  body      model.UpdateStudent  true  "Update Student"
+// @Success      200      {object}  model.Student
+// @Failure      400      {object}  http.StatusBadRequest
+// @Router       /students/{id} [patch]
 func UpdateStudent(c *gin.Context) {
 	var student models.Student
 	id := c.Params.ByName("id")
@@ -76,6 +121,15 @@ func UpdateStudent(c *gin.Context) {
 	c.JSON(http.StatusOK, student)
 }
 
+// SearchByCPF godoc
+// @Summary      List students
+// @Description  get students
+// @Tags         students
+// @Accept       json
+// @Produce      json
+// @Param        cpf  query     string  false  "name search by cpf"  Format(cpf)
+// @Success      200  {array}   model.Student
+// @Router       /students/cpf/:cpf	 [get]
 func SearchByCPF(c *gin.Context) {
 	var student models.Student
 	cpf := c.Param("cpf")
@@ -90,4 +144,12 @@ func SearchByCPF(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, student)
+}
+
+// RenderPageNotFound godoc
+// @Summary      Default page not found
+// @Description  Default page for router not found
+// @Success      400  {empty}   http.StatusNotFound
+func RenderPageNotFound(c *gin.Context) {
+	c.HTML(http.StatusNotFound, "404.html", nil)
 }
